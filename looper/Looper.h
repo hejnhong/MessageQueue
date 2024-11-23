@@ -6,8 +6,8 @@
 #ifndef LOOPER_H
 #define LOOPER_H
 
-#include "MessageQueue.h"
-#include "Message.h"
+#include "message/MessageQueue.h"
+#include "message/Message.h"
 #include <unordered_map>
 #include <thread>
 #include <mutex>

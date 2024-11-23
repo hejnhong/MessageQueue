@@ -1,6 +1,6 @@
 #include <thread>
 #include "Looper.h"
-#include "Handler.h"
+#include "handler/Handler.h"
 #include <iostream>
 #include <chrono>
 
@@ -14,7 +14,8 @@ Looper::Looper(std::string name, int queSize) : mName(name){
 void Looper::prepare(std::string name, int queSize) {
     std::unique_lock<std::mutex> lock;
     if (threadLooper.find(std::this_thread::get_id()) != threadLooper.end()) {
-        printf("current thread already has one looper\n");
+        std::cout<<"current thread: "<<std::this_thread::get_id()
+                 <<" already has one looper"<<std::endl;
         return;
     }
     Looper* looper = new Looper(name, queSize);

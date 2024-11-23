@@ -1,4 +1,4 @@
-#include "Handler.h"
+#include "handler/Handler.h"
 #include "MyHandler.h"
 #include <iostream>
 #include <thread>
@@ -13,8 +13,7 @@ void looper1() {
 void looper2() {
     std::cout<<"looper2 thread:"<<std::this_thread::get_id()<<std::endl;
     Looper::prepare("looper2", 30);
-    // test repeat init
-    Looper::prepare();
+    Looper::prepare();  // a test for repeated init
     Looper::loop();
 }
 
@@ -26,9 +25,11 @@ void task() {
         static int id = 1;
         std::this_thread::sleep_for(std::chrono::milliseconds(70));
         if (id%2) {
-            handler2->sendMessage(id, nullptr);
-        } else {
+            // send message to looper2 when id is even
             handler1->sendMessage(id, nullptr);
+        } else {
+            // send message to looper1 when id is odd
+            handler2->sendMessage(id, nullptr);
         }
         id++;
     }
@@ -42,8 +43,8 @@ int main() {
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     std::thread looper2Thread(looper2);
 
-    // create thread for handler after 2 seconds
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    // create thread for handler after 4 seconds
+    std::this_thread::sleep_for(std::chrono::milliseconds(4000));
     std::thread taskThread(task);
 
     looper1Thread.join();

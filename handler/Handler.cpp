@@ -1,5 +1,5 @@
 #include "Handler.h"
-#include "Message.h"
+#include "message/Message.h"
 #include <iostream>
 #include <thread>
 
@@ -21,8 +21,8 @@ Handler::~Handler() {
 }
 
 void Handler::sendMessage(int id, void* userDate) {
-    std::cout<<"sendMessage:"<<id
-            <<", thread:"<<std::this_thread::get_id()<<std::endl;
+    std::cout<<"thread: "<<std::this_thread::get_id()<<", "
+             <<"sendMessage:"<<id<<std::endl;
     if (!mLooper) {
         printf("fail, no looper");
         return;
